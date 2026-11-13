@@ -1,0 +1,25 @@
+# 构建产物
+build/
+build-*/
+cmake-build-*/
+
+# 运行期数据（引擎自己的库文件、WAL、索引文件）
+data/
+selftest_data/
+
+# 目标文件与可执行
+*.o
+*.obj
+*.exe
+*.out
+*.pdb
+*.ilk
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 日志与压测结果（保留脚本，丢弃原始输出）
+*.log
+bench/results/
