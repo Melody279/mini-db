@@ -99,3 +99,4 @@ python -m ziglang c++ -std=c++17 -I include `
 - 数据模型：`docs/数据模型v0.md`
 - 协议：`docs/协议v0.md`
 - 开发日志：`docs/开发日志.md`
+- 施工手册：`docs/storage手搓流程.md`（W1 第一天照这个动手）
