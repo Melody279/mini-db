@@ -59,7 +59,7 @@ Status Engine::Open(const Config& config) {
     return load_status;
   }
 
-  buffer_pool_.reset(new BufferPool(config_.data_dir, config_.buffer_pages));
+  buffer_pool_.reset(new BufferPoolManager(config_.buffer_pages, config_.data_dir));
   lock_mgr_.reset(new LockManager());
   wal_.reset(new Wal(config_.data_dir + "/wal.log"));
   txn_mgr_.reset(new TransactionManager(wal_.get(), lock_mgr_.get()));

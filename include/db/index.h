@@ -11,7 +11,7 @@
 
 namespace db {
 
-class BufferPool;
+class BufferPoolManager;
 
 // 键视图：不自持内存，调用方保证 key 在本次调用期间有效
 struct Key {
@@ -21,10 +21,10 @@ struct Key {
 
 class BPlusTree {
  public:
-  BPlusTree(BufferPool* buffer_pool, uint16_t key_len, bool unique, PageId root);
+  BPlusTree(BufferPoolManager* buffer_pool, uint16_t key_len, bool unique, PageId root);
 
   // 新建一棵空树，返回根页号
-  static Status Create(BufferPool* buffer_pool, uint16_t key_len, bool unique, PageId* root_out);
+  static Status Create(BufferPoolManager* buffer_pool, uint16_t key_len, bool unique, PageId* root_out);
 
   // unique=true 时重复键返回 Status::kDuplicate
   Status Insert(Key key, RID rid);
@@ -60,7 +60,7 @@ class BPlusTree {
   PageId Root() const { return root_; }
 
  private:
-  BufferPool* buffer_pool_;
+  BufferPoolManager* buffer_pool_;
   uint16_t key_len_;
   bool unique_;
   PageId root_;

@@ -2,7 +2,7 @@
 
 大作业交付物分两块：**自己手搓的迷你数据库引擎**（存储 / 索引 / 查询 / 事务 / 元数据 / 服务）与**打车业务 App**（手机端，经 HTTP 网关调用引擎）。业务只是负载，内核才是要被评审看的东西。
 
-当前阶段：**M0 骨架完成**（接口冻结 + 可编译 + 可交互 + 自检通过），实现留待 W1–W3 填充。
+当前阶段：**M0 骨架完成；M0.5 存储层已按大赛 RMDB 框架重排**（`DiskManager / Page / BufferPoolManager / Replacer / HeapFile`），实现留待 W1–W3 填充。
 
 ## 目录
 
@@ -10,7 +10,8 @@
 mini-db/
 ├─ include/db/           # 六个模块的接口（M0 已冻结）
 │   ├─ common.h          #   常量、RID、Status、日志、计时
-│   ├─ storage.h         #   页 / 缓冲池 / 堆文件（大赛题1）
+│   ├─ storage.h         #   DiskManager / Page / BufferPoolManager / HeapFile（大赛题1）
+│   ├─ replacer.h        #   Replacer 抽象类 + LRUReplacer（对齐大赛 src/replacer）
 │   ├─ catalog.h         #   元数据（表定义、列偏移、索引）
 │   ├─ index.h           #   B+ 树与范围扫描（大赛题3）
 │   ├─ query.h           #   parser + 算子 + EXPLAIN（题2/4/5/7）
@@ -20,7 +21,7 @@ mini-db/
 ├─ src/{common,storage,catalog,index,query,txn,biz,server}/
 ├─ tests/m0_selftest.cpp # 34 项断言：常量/类型/状态机/计价/catalog 往返
 ├─ warmup/{a_slotted_page,b_where_parser,c_tcp_echo}/   # 手搓热身三件套
-├─ docs/                 # 数据模型 v0、协议 v0、开发日志
+├─ docs/                 # 数据模型 v0、协议 v0、开发日志、storage 手搓流程、RMDB 对齐说明
 └─ CMakeLists.txt
 ```
 
@@ -51,6 +52,7 @@ printf 'PING\nHELLO\nQUIT\n' | ./build/db_server --stdio
 python -m pip install ziglang
 python -m ziglang c++ -std=c++17 -I include `
   src/common/common.cpp src/catalog/catalog.cpp src/storage/storage.cpp `
+  src/storage/replacer.cpp `
   src/index/bplus.cpp src/query/query.cpp src/txn/txn.cpp src/biz/biz.cpp `
   src/server/server.cpp tests/m0_selftest.cpp -o build/m0_selftest.exe
 ```
@@ -76,7 +78,7 @@ python -m ziglang c++ -std=c++17 -I include `
 
 | 模块 | 负责人 | 状态 |
 |---|---|---|
-| `storage`（页/堆文件/缓冲池） | A | 桩实现，W1 填 |
+| `storage`（DiskManager/页/缓冲池/堆文件） | A | 结构已对齐 RMDB，`ReadPage/WritePage` 与页内逻辑待 W1 手搓 |
 | `catalog`（元数据） | A | **已实现**（含落盘与往返） |
 | `index`（B+ 树） | A | 桩实现，W2 填 |
 | `query`（parser/算子/EXPLAIN） | B | 桩实现，W1–W2 填 |
@@ -100,3 +102,4 @@ python -m ziglang c++ -std=c++17 -I include `
 - 协议：`docs/协议v0.md`
 - 开发日志：`docs/开发日志.md`
 - 施工手册：`docs/storage手搓流程.md`（W1 第一天照这个动手）
+- 框架对齐：`docs/rmdb对齐说明.md`（类/方法对照、五处差异的理由、待手搓清单）

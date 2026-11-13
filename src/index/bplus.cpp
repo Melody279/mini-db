@@ -9,10 +9,10 @@ struct BPlusTree::RangeIter::Impl {
   // W2 填充：当前叶页号、槽号、上界键
 };
 
-BPlusTree::BPlusTree(BufferPool* buffer_pool, uint16_t key_len, bool unique, PageId root)
+BPlusTree::BPlusTree(BufferPoolManager* buffer_pool, uint16_t key_len, bool unique, PageId root)
     : buffer_pool_(buffer_pool), key_len_(key_len), unique_(unique), root_(root) {}
 
-Status BPlusTree::Create(BufferPool* buffer_pool, uint16_t key_len, bool unique, PageId* root_out) {
+Status BPlusTree::Create(BufferPoolManager* buffer_pool, uint16_t key_len, bool unique, PageId* root_out) {
   (void)buffer_pool;
   (void)key_len;
   (void)unique;

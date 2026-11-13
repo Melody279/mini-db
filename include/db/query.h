@@ -19,7 +19,7 @@
 
 namespace db {
 
-class BufferPool;
+class BufferPoolManager;
 class LockManager;
 class TransactionManager;
 
@@ -105,7 +105,7 @@ struct ResultSet {
 
 class Executor {
  public:
-  Executor(Catalog* catalog, BufferPool* buffer_pool, LockManager* lock_mgr,
+  Executor(Catalog* catalog, BufferPoolManager* buffer_pool, LockManager* lock_mgr,
            TransactionManager* txn_mgr);
 
   Status Execute(const Statement& stmt, TxnId txn, ResultSet* out);
@@ -113,7 +113,7 @@ class Executor {
 
  private:
   Catalog* catalog_;
-  BufferPool* buffer_pool_;
+  BufferPoolManager* buffer_pool_;
   LockManager* lock_mgr_;
   TransactionManager* txn_mgr_;
 };

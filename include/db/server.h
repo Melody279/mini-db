@@ -13,7 +13,7 @@
 
 namespace db {
 
-class BufferPool;
+class BufferPoolManager;
 class BPlusTree;
 class Executor;
 class LockManager;
@@ -46,7 +46,7 @@ class Engine {
  private:
   Config config_;
   std::unique_ptr<Catalog> catalog_;
-  std::unique_ptr<BufferPool> buffer_pool_;
+  std::unique_ptr<BufferPoolManager> buffer_pool_;
   std::unique_ptr<LockManager> lock_mgr_;
   std::unique_ptr<Wal> wal_;
   std::unique_ptr<TransactionManager> txn_mgr_;

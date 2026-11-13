@@ -25,7 +25,7 @@ Status Parser::Parse(const std::string& sql, Statement* out, std::string* err) c
   return Status::kNotImplemented;
 }
 
-Executor::Executor(Catalog* catalog, BufferPool* buffer_pool, LockManager* lock_mgr,
+Executor::Executor(Catalog* catalog, BufferPoolManager* buffer_pool, LockManager* lock_mgr,
                    TransactionManager* txn_mgr)
     : catalog_(catalog), buffer_pool_(buffer_pool), lock_mgr_(lock_mgr), txn_mgr_(txn_mgr) {
   LOG_INFO_MSG("Executor 组装完成（算子实现在 W1/W2）");
